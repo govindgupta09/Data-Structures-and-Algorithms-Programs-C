@@ -1,0 +1,94 @@
+// Array implementation of QUEUE in DS.
+//structure of Queue...
+
+
+
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct ArrayQueue
+{
+    int front,rear;
+    int capacity;
+    int *array;
+};
+
+// createQueue()..
+struct ArrayQueue* createQueue(int capacity)
+{
+    struct ArrayQueue*Q=malloc(sizeof(struct ArrayQueue));
+    if(!Q) return(NULL);
+    Q->capacity=capacity;
+    Q->front=Q->rear=-1;
+    Q->array=malloc(Q->capacity*sizeof(int));
+    if(!Q->array)
+        return(NULL);
+    return(Q);
+}
+
+// isEmptyQueue()..
+int isEmptyQueue(struct ArrayQueue*Q)
+{
+    return(Q->front==-1);
+}
+
+// isFullQueue()..
+int isFullQueue(struct ArrayQueue*Q)
+{
+    return((Q->rear+1)%Q->capacity==Q->front);
+}
+
+// QueuSize()..
+int QueueSize(struct ArrayQueue*Q)
+{
+    return((Q->capacity - Q->front + Q->rear+1)%Q->capacity);
+}
+
+// enQueue()..
+void enQueue(struct ArrayQueue *Q,int data)
+{
+    if(isFullQueue(Q))
+        printf("Oveerflow.");
+    else
+    {
+        Q->rear=(Q->rear+1)%Q->capacity;
+        Q->array[Q->rear]=data;
+        if(Q->front==-1)
+        Q->front= Q->rear;
+    }
+}
+
+// deQueue()...
+int deQueue(struct ArrayQueue *Q)
+{
+    int data= -1;
+    if(isEmptyQueue(Q))
+    {
+        printf("Queue is Empty.");
+        return(-1);
+    }
+    else
+    {
+        data=Q->array[Q->front];
+        if(Q->front==Q->rear)
+        Q->front=Q->rear=-1;
+        else
+        Q->front=(Q->front+1)%Q->capacity;
+    }
+    return data;
+}
+
+//deleteQueue()...
+void deleteQueue(struct ArrayQueue *Q)
+{
+    if(Q)
+    {
+        if(Q->array)
+        {
+            free(Q->array);
+        }
+        free(Q);
+    }
+}
