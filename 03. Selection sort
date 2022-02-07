@@ -1,0 +1,34 @@
+//  2. Selection sort..
+
+
+
+#include<stdio.h>
+int min(int A[],int k,int n)
+{
+    int j,LOC,MIN;
+    MIN=A[k];
+    LOC=k;
+    for(j=k+1;j<=n-1;j++)
+        if (MIN>A[j])
+        {
+            MIN = A[j];
+            LOC = j;
+        }
+        return(LOC);
+}
+
+void main()
+{
+    int a[]={33,11,99,66,55,88,21,86,77,22,1,44},i,temp,loc;
+    for(i=0;i<=10;i++)     // i<= n-2 here.. n=12.
+    {
+        loc=min(a,i,12);
+        temp=a[i];
+        a[i]=a[loc];
+        a[loc]=temp;
+    }
+    for(i=0;i<12;i++)
+    printf("%d ",a[i]);
+}
+
+
