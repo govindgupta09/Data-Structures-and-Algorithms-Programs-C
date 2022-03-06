@@ -1,0 +1,384 @@
+// C program for the all operations in the Singly Linked List...
+
+
+#include <stdio.h>
+#include <stdlib.h>
+// Linked List Node
+struct node {
+	int info;
+	struct node* link;
+};
+struct node* start = NULL;
+
+// Function to create list with n nodes initially
+void createList(){
+	if (start == NULL) {
+		int n;
+		printf("\nEnter the number of nodes you wants to create: ");
+		scanf("%d", &n);
+		if (n != 0) {
+			int data;
+			struct node *newNode , *head;
+			newNode = malloc(sizeof(struct node));
+			start = newNode;
+			head = start;
+			printf("\nEnter number to be inserted : ");
+			scanf("%d", &data);
+			start->info = data;
+
+			for (int i = 2; i <= n; i++) {
+				newNode = malloc(sizeof(struct node));
+				head->link = newNode;
+				printf("\nEnter number to be inserted : ");
+				scanf("%d", &data);
+				newNode->info = data;
+				head = head->link;
+			}
+            // last node's link must be NULL.
+            head->link = NULL;  
+		}
+		printf("\nThe list is created\n");
+	}
+	else
+		printf("\nThe list is already created\n");
+}
+
+// Function to traverse the linked list
+void traverse(){
+	struct node* head;
+
+	// List is empty
+	if (start == NULL)
+		printf("\nList is empty\n");
+
+	// Else print the Linked List
+	else {
+        head = start;
+		while(head != NULL) {
+			printf("Data = %d\n", head->info);
+	        head = head->link;
+		}
+	}
+}
+
+// Function to insert at the beginning of the linked list
+void insertAtFront()
+{
+	int data;
+	struct node* newNode = malloc(sizeof(struct node));
+	printf("\nEnter number to be inserted : ");
+	scanf("%d", &data);
+	newNode->info = data;
+
+	newNode->link = start;
+	start = newNode;
+}
+
+// Function to insert node at the end of the linked list
+void insertAtEnd()
+{
+	int data;
+	struct node *newNode = malloc(sizeof(struct node));
+    struct node *head;
+
+	printf("\nEnter number to be inserted : ");
+	scanf("%d", &data);
+    newNode->info = data;
+    newNode->link = NULL;
+
+    head = start;
+	while(head->link != NULL) {
+        head = head->link;
+	}       
+    head->link = newNode;
+}
+
+// Function to insert node after any node.
+void insertAfterNode(){
+    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    struct node *head;
+    if(newNode == NULL){
+        printf("\nMemory not allocated. ");
+        return;
+    }
+    int data;
+    printf("\nEnter the node's info after which newNode to be added: ");
+    scanf("%d",&data);
+    printf("\nEnter the info of newNode: ");
+    scanf("%d",&newNode->info);
+    head = start;
+    while(head->info != data){
+        head = head->link;
+    }
+    newNode->link = head->link;
+    head->link = newNode;
+}
+
+// Function to insert at any specified position in the linked list.
+void insertAtPosition(){
+	struct node *head, *newNode;
+	int position, data, i = 1;
+	newNode = malloc(sizeof(struct node));
+
+	printf("\nEnter position after which data to be insert :");
+	scanf("%d", &position);
+    printf("\nEnter the newNode's info: ");
+    scanf("%d", &data);
+
+	head = start;
+	newNode->info = data;
+	newNode->link = NULL;
+	while (i < position - 1) {
+		head = head->link;
+		i++;
+	}
+	newNode->link = head->link;
+	head->link = newNode;
+}
+
+// Function to delete from the front of the linked list.
+void deleteFirst(){
+	struct node* head;
+	if (start == NULL)
+		printf("\nList is empty\n");
+	else {
+		head = start;
+		start = start->link;
+		free(head);
+	}
+}
+
+// Function to delete from the end of the linked list
+void deleteEnd(){
+	struct node *head, *temp;
+	if (start == NULL)
+		printf("\nList is Empty\n");
+	else {
+		head = start;
+		while (head->link != NULL) {
+			temp = head;
+			head = head->link;
+		}
+		free(head);
+		temp->link = NULL;
+	}
+}
+
+// Function to delete node after any node's info.
+void deleteAfterNode(){
+    struct node *head, *temp;
+    if(start == NULL){
+        printf("Node is Empty: \n");
+        return;
+    }
+    int data;
+    printf("\nEnter the node's info after which node to be delete: ");
+    scanf("%d",&data);
+    head = start;
+    while(head->info != data){
+        temp = head;
+        head = head->link;
+    }
+    temp->link = head->link;
+    free(head);
+}
+
+// Function to delete from any specified position from the linked list
+void deletePosition(){
+	struct node *head, *temp;
+	int i = 1, position;
+
+	if (start == NULL)
+		printf("\nList is empty\n");
+	else {
+		printf("\nEnter index of node to be deleted: ");
+		scanf("%d", &position);
+		temp = malloc(sizeof(struct node));
+		head = start;
+
+		while (i < position - 1) {
+			head = head->link;
+			i++;
+		}
+
+		temp = head->link;
+		head->link = temp->link;
+		free(temp);
+	}
+}
+
+// Function to find the maximum element in the linked list.
+void maximum(){
+	struct node* head;
+
+	if (start == NULL)
+		printf("\nList is empty\n");
+	else {
+		head = start;
+		int max = head->info;
+
+		// Traverse LinkedList and update the maximum element
+		while (head != NULL) {
+			if (max < head->info){
+                max = head->info;
+            }	
+			head = head->link;
+		}
+		printf("\nMaximum number in this list is : %d ",max);
+	}
+}
+
+// Function to find the mean of the elements in the linked list
+void mean(){
+	struct node* head;
+
+	if (start == NULL)
+		printf("\nList is empty\n");
+	else {
+		head = start;
+		int sum = 0, count = 0;
+		float Mean;
+
+		while (head != NULL) {
+            // Update the sum
+			sum = sum + head->info;
+			head = head->link;
+			count++;
+		}
+		// Find the Mean & print.
+		Mean = sum / count;
+		printf("\nMean is %f ", Mean);
+	}
+}
+
+
+// Function to sort the linked list in Ascending order.
+void sort(){
+	struct node* head = start;
+	struct node* headNext = NULL;
+	int temp;
+
+	if (start == NULL) {
+		return;
+	}
+	else {
+		while (head != NULL) {
+			headNext = head->link;
+			// Traverse the LL nestedly and find the minimum element.
+			while (headNext != NULL) {
+                // Swap with it the value at head
+				if (head->info > headNext->info) {
+					temp = head->info;
+					head->info = headNext->info;
+					headNext->info = temp;
+				}
+				headNext = headNext->link;
+			}
+			head = head->link;
+		}
+	}
+}
+
+// Function to reverse the linked list
+void reverseLinkedList(){
+	struct node *temp1, *temp2, *head;
+	temp1 = temp2 = NULL;
+
+	if (start == NULL)
+		printf("List is empty\n");
+	else {
+		while (start != NULL) {
+            // reversing of points
+			temp2 = start->link;
+			start->link = temp1;
+			temp1 = start;
+			start = temp2;
+		}
+		start = temp1;
+
+        // New head Node
+		head = start;
+
+		printf("Reversed linked list is : ");
+		while (head != NULL) {
+			printf("%d ", head->info);
+			head = head->link;
+		}
+	}
+}
+
+// Driver Code
+int main()
+{
+	int choice;
+	while (1) {
+        printf("\n\t01. To create list\n");
+		printf("\t02. To see list\n");
+		printf("\t03. For insertion at starting\n");
+		printf("\t04. For insertion at end\n");
+        printf("\t05. For insertion after the node\n");
+		printf("\t06. For insertion at any position\n");
+		printf("\t07. For deletion of first element\n");
+		printf("\t08. For deletion of last element\n");
+        printf("\t09. For deletion after node\n");
+		printf("\t10. For deletion of element at any position\n");
+		printf("\t11. To find maximum among the elements\n");
+		printf("\t12. To find mean of the elements\n");
+		printf("\t13. To sort element\n");
+		printf("\t14. To reverse the linked list\n");
+		printf("\t15. To exit\n");
+		printf("\nEnter Choice number by seeing on above Table: ");
+		scanf("%d", &choice);
+
+		switch (choice) {
+        case 1:
+            createList();
+            break;
+		case 2:
+			traverse();
+			break;
+		case 3:
+			insertAtFront();
+			break;
+		case 4:
+			insertAtEnd();
+			break;
+        case 5:
+            insertAfterNode();
+            break;
+		case 6:
+			insertAtPosition();
+			break;
+		case 7:
+        	deleteFirst();
+			break;
+		case 8:
+			deleteEnd();
+			break;
+		case 9:
+            deleteAfterNode();
+            break;
+        case 10:
+			deletePosition();
+			break;
+		case 11:
+			maximum();
+			break;
+		case 12:
+			mean();
+			break;
+		case 13:
+			sort();
+			break;
+		case 14:
+			reverseLinkedList();
+			break;
+		case 15:
+			exit(1);
+			break;
+		default:
+			printf("Incorrect Choice\n");
+		}
+	}
+	return 0;
+}
