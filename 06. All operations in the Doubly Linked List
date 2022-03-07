@@ -1,0 +1,220 @@
+// C program for the all operations in the Doubly Linked List.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+	struct node *prev;
+	int info;
+	struct node *next;
+};
+struct node* start = NULL;
+
+// Function to traverse the linked list
+void traverse(){
+	// List is empty
+	if (start == NULL) {
+		printf("\nList is empty\n");
+		return;
+	}
+	// Else print the Data
+	struct node* head;
+	head = start;
+	while (head != NULL) {
+		printf("Data = %d\n", head->info);
+		head = head->next;
+	}
+}
+
+// Function to insert at the front of the linked list.
+void insertAtFront(){
+	int data;
+	struct node* newNode = (struct node*)malloc(sizeof(struct node));
+	printf("\nEnter number to be inserted: ");
+	scanf("%d", &data);
+	newNode->info = data;
+	newNode->prev = NULL;
+
+	// Pointer of newNode will be assigned to start
+	newNode->next = start;
+	start = newNode;
+}
+
+// Function to insert at the end of the linked list.
+void insertAtEnd(){
+	int data;
+	struct node *newNode, *head;
+	newNode = (struct node*)malloc(sizeof(struct node));
+	newNode->prev = NULL;
+	newNode->next = NULL;
+	printf("\nEnter number to be inserted: ");
+	scanf("%d", &data);
+	newNode->info = data;
+	head = start;
+
+	if (start == NULL) {
+		start = newNode;
+	}
+	else {
+		while (head->next != NULL){
+            head = head->next;
+        }
+		newNode->prev = head;
+		head->next = newNode;
+	}
+}
+
+// Function to insert at any specified position in the linked list.
+void insertAtPosition(){
+	int data, position, i = 1;
+	struct node *head, *newNode;
+	newNode = malloc(sizeof(struct node));
+	newNode->next = NULL;
+	newNode->prev = NULL;
+
+	printf("\nEnter position where you wants to insert a newNode: ");
+	scanf("%d", &position);
+
+	if (start == NULL) {
+		start = newNode;
+		newNode->prev = NULL;
+		newNode->next = NULL;
+	}
+	else if (position == 1) {
+	/* newNode->next = start;
+		newNode->next->prev = newNode;
+		newNode->prev = NULL;
+		start = newNode; 
+    */
+	// Simply use below function.
+	insertAtFront();
+	}
+	else {
+	printf("\nEnter number to be inserted: ");
+	scanf("%d", &data);
+	newNode->info = data;
+	head = start;
+		while (i < position - 1) {
+			head = head->next;
+			i++;
+		}
+		newNode->next = head->next;
+		newNode->prev = head;
+		head->next->prev = newNode;
+		head->next = newNode;
+		//head->next->prev = newNode;
+	}
+}
+
+// Function to delete from the front of the linked list
+void deleteFirst(){
+	struct node* head;
+	if (start == NULL)
+		printf("\nList is empty\n");
+	else {
+		head = start;
+		start = start->next;
+		if (start != NULL)
+			start->prev = NULL;
+		free(head);
+	}
+}
+
+// Function to delete from the end of the linked list.
+void deleteEnd(){
+	struct node* head;
+	if (start == NULL)
+		printf("\nList is empty\n");
+	head = start;
+	while (head->next != NULL)
+		head = head->next;
+	if (start->next == NULL)
+		start = NULL;
+	else {
+		head->prev->next = NULL;
+		free(head);
+	}
+}
+
+// Function to delete from any specified position from the linked list
+void deletePosition(){
+	int position, i = 1;
+	struct node *head, *temp;
+	head = start;
+
+	if (start == NULL)
+		printf("\nList is empty\n");
+	else {
+		// Position to be deleted
+		printf("\nEnter position that node to delete : ");
+		scanf("%d", &position);
+        // If the temp is the first node
+		if (position == 1) {
+			deleteFirst();
+			if (start != NULL) {
+				start->prev = NULL;
+			}
+			free(temp);
+			return;
+		}
+        // Traverse till temp
+		while (i < position - 1) {
+			head = head->next;
+			i++;
+		}
+		temp = head->next;
+		if (temp->next != NULL){
+            temp->next->prev = head;
+        }	
+		head->next = temp->next;
+		free(temp);
+	}
+}
+
+// Driver Code
+int main(){
+	int choice;
+	while (1) {
+		printf("\n\t1 To see list\n");
+		printf("\t2 For insertion at starting\n");
+		printf("\t3 For insertion at end\n");
+		printf("\t4 For insertion at any position\n");
+		printf("\t5 For deletion of first element\n");
+		printf("\t6 For deletion of last element\n");
+		printf("\t7 For deletion of element at any position\n");
+		printf("\t8 To exit\n");
+		printf("\nEnter Choice : ");
+		scanf("%d", &choice);
+
+		switch (choice) {
+		case 1:
+			traverse();
+			break;
+		case 2:
+			insertAtFront();
+			break;
+		case 3:
+			insertAtEnd();
+			break;
+		case 4:
+			insertAtPosition();
+			break;
+		case 5:
+			deleteFirst();
+			break;
+		case 6:
+			deleteEnd();
+			break;
+		case 7:
+			deletePosition();
+			break;
+		case 8:
+			exit(1);
+			break;
+		default:
+			printf("Incorrect Choice. Try Again \n");
+			continue;
+		}
+	}
+	return 0;
+}
