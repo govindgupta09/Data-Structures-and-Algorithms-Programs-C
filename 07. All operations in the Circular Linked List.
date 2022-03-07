@@ -1,0 +1,219 @@
+// C program for the all operations in the Circular Linked List.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+	int info;
+	struct node* next;
+};
+// Pointer to last node in the list
+struct node* last = NULL;
+
+
+// Function to view the list.
+void viewList(){
+	// If list is empty
+	if (last == NULL)
+		printf("\nList is empty\n");
+	else {
+		struct node* temp;
+		temp = last->next;
+
+		// While first node is not reached again, print, since the list is circular
+		do {
+			printf("\nData = %d", temp->info);
+			temp = temp->next;
+		} while (temp != last->next);
+	}
+}
+
+// Function to insert a node in the starting of the list
+void insertAtFront(){
+	int data;
+	struct node* newNode;
+	newNode = (struct node*)malloc(sizeof(struct node));
+
+	printf("\nEnter data to be inserted: ");
+	scanf("%d", &data);
+
+	// If the new node is the only node in the list
+	if (last == NULL) {
+		newNode->info = data;
+		newNode->next = newNode;
+		last = newNode;
+	}
+	// Else last node contains the reference of the new node and new node contains the reference of the previous first node
+	else {
+		newNode->info = data;
+		newNode->next = last->next;
+
+		// last node now has reference of the new node newNode
+		last->next = newNode;
+	}
+}
+
+// Function to insert a node in the last of the list.
+void addatlast(){
+    int data;
+    struct node* newNode;
+    newNode = (struct node*)malloc(sizeof(struct node));
+ 
+    printf("\nEnter data to be inserted : \n");
+    scanf("%d", &data);
+ 
+    // If the new node is the only node in the list.
+    if (last == NULL) {
+        newNode->info = data;
+        newNode->next = newNode;
+        last = newNode;
+    }
+    // Else the new node will be the last node and will contain the reference of newNode node
+    else {
+        newNode->info = data;
+        newNode->next = last->next;
+        last->next = newNode;
+        last = newNode;
+    }
+}
+
+// Function to insert after any specified element
+void insertafter(){
+    int data, value;
+ 
+    struct node *head, *newNode;
+
+    printf("\nEnter number after which you want to enter number: \n");
+    scanf("%d", &value);
+    head = last->next;
+ 
+    do {
+        // Element after which node is/ to be inserted is found
+        if (head->info == value) {
+            newNode = (struct node*)malloc(sizeof(struct node));
+ 
+            printf("\nEnter data to be inserted : \n");
+            scanf("%d", &data);
+            newNode->info = data;
+            newNode->next = head->next;
+            head->next = newNode;
+ 
+            // If head is the last node so now newNode will become the last node
+            if (head == last)
+                last = newNode;
+            break;
+        }
+        else
+            head = head->next;
+    } 
+    while (head != last->next);
+}
+
+// Function to delete the first element of the list
+void deletefirst(){
+    struct node* temp;
+
+    if (last == NULL)
+        printf("\nList is empty.\n");
+ 
+    // Else last node now contains reference of the second node
+    // in the list because the list is circular.
+    else {
+        temp = last->next;
+        last->next = temp->next;
+        free(temp);
+    }
+}
+ 
+// Function to delete the last node in the list.
+void deletelast(){
+    struct node* head;
+ 
+    if (last == NULL)
+        printf("\nList is empty.\n");
+ 
+    head = last->next;
+ 
+    // Traverse the list till the second last node
+    while (head->next != last)
+        head = head->next;
+ 
+    // Second last node now contains the reference of the first node in the list
+    head->next = last->next;
+    last = head;
+}
+
+// Function to delete an element at a specified index in the list.
+void deleteAtIndex(){
+    // Stores the index at which the element is to be deleted
+    int position, i = 1;
+    struct node *head, *temp;
+    head = last->next;
+ 
+    if (last == NULL)
+        printf("\nList is empty.\n");
+     else {
+        printf("\nEnter index from where node to delete : ");
+        scanf("%d", &position);
+ 
+        // Traverse till the node to be deleted is reached.
+        while (i <= position - 1) {
+            head = head->next;
+            i++;
+        }
+        // After the loop ends, head points at a node just before the node to be deleted
+        // Reassigning links
+        temp = head->next;
+        head->next = temp->next;
+        free(temp);
+    }
+}
+ 
+// Driver Code
+int main(){
+	int choice;
+	while (1) {
+		printf("\n\t1 To see list\n");
+		printf("\t2 For insertion at starting\n");
+		printf("\t3 For insertion at last\n");
+		printf("\t4 For insertion at any position\n");
+		printf("\t5 For deletion of first element\n");
+		printf("\t6 For deletion of last element\n");
+		printf("\t7 For deletion of element at any position\n");
+		printf("\t8 To exit\n");
+		printf("\nEnter Choice : ");
+		scanf("%d", &choice);
+
+		switch (choice) {
+		case 1:
+			viewList();
+			break;
+		case 2:
+			insertAtFront();
+			break;
+		case 3:
+			addatlast();
+			break;
+		case 4:
+			insertafter();
+			break;
+		case 5:
+			deletefirst();
+			break;
+		case 6:
+			deletelast();
+			break;
+		case 7:
+			deleteAtIndex();
+			break;
+		case 8:
+			exit(1);
+			break;
+		default:
+			printf("Incorrect Choice. Try Again \n");
+			continue;
+		}
+	}
+	return 0;
+}
+
