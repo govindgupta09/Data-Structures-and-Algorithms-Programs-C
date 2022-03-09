@@ -1,0 +1,150 @@
+//  C Program to Implement Stack using Linked List
+
+
+#include <stdio.h>
+#include <stdlib.h>
+int count = 0;
+struct node
+{
+    int info;
+    struct node *link;
+}*Top,*head,*newNode;
+ 
+// Create empty stack 
+void create(){
+    Top = NULL;
+}
+ 
+// Count stack elements 
+void stack_count(){
+    printf("\n No. of elements in stack : %d", count);
+}
+ 
+// Push data into stack 
+void push(int data){
+    if (Top == NULL){
+        Top =(struct node *)malloc(sizeof(struct node));
+        Top->link = NULL;
+        Top->info = data;
+    }else{
+        newNode =(struct node *)malloc(sizeof(struct node));
+        newNode->link = Top;
+        newNode->info = data;
+        Top = newNode;
+    }
+    count++;
+}
+ 
+/* Display stack elements */
+void display(){
+    head = Top;
+    if (head == NULL){
+        printf("Stack is empty (Underflow).");
+        return;
+    }
+    printf("\nElements of Stack are: ");
+    while (head != NULL){
+        printf("%d ", head->info);
+        head = head->link;
+    }
+ }
+ 
+/* Pop Operation on stack */
+void pop(){
+    head = Top;
+    if (head == NULL){
+        printf("\n Error : Trying to pop from empty stack (Underflow).");
+        return;
+    }else{
+        head = head->link;
+    }    
+    printf("\n Popped value is: %d", Top->info);
+    free(Top);
+    Top = head;
+    count--;
+}
+ 
+/* Return Top element */
+int peek(){
+    return(Top->info);
+}
+ 
+/* Check if stack is empty or not */
+void empty(){
+    if (Top == NULL)
+        printf("\n Stack is empty (underflow).");
+    else
+        printf("\n Stack is not empty with %d elements.", count);
+}
+ 
+/* Destroy entire stack */
+void destroy(){
+    head = Top;
+    while (head != NULL){
+        head = Top->link;
+        free(Top);
+        Top = head;
+        head = head->link;
+    }
+    free(head);
+    Top = NULL;
+ 
+    printf("\n All stack elements destroyed.");
+    count = 0;
+}
+
+void main()
+{
+    int data, choice, peek_ele;
+    printf("\n 1 - Push");
+    printf("\n 2 - Pop");
+    printf("\n 3 - Top");
+    printf("\n 4 - Empty");
+    printf("\n 5 - Display");
+    printf("\n 6 - Stack Count");
+    printf("\n 7 - Destroy stack");
+    printf("\n 8 - Exit");
+ 
+    create();
+    while (1){
+        printf("\n\nEnter your choice: ");
+        scanf("%d", &choice);
+ 
+        switch (choice){
+        case 1:
+            printf("\nEnter data(number) to add in stack: ");
+            scanf("%d", &data);
+            push(data);
+            break;
+        case 2:
+            pop();
+            break;
+        case 3:
+            if (Top == NULL)
+                printf("No elements in stack (Underflow).");
+            else{
+                peek_ele = peek();
+                printf("\n Top element is : %d", peek_ele);
+            }
+            break;
+        case 4:
+            empty();
+            break;
+        case 5:
+            display();
+            break;
+        case 6:
+            stack_count();
+            break;
+        case 7:
+            destroy();
+            break;
+        case 8:
+            exit(0);
+        default :
+            printf(" Wrong choice, Please enter correct choice  ");
+            break;
+        }
+    }
+}
+ 
