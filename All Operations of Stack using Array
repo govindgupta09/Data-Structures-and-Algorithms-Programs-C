@@ -1,0 +1,90 @@
+// C Program to Implement Stack Using Array..
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int n, top = -1,stack[20];
+void createStack(){
+	printf("\nEnter the size of Stack to create , Actually stack is already created of size 20: ");
+	scanf("%d",&n);
+	int Stack[n];
+}
+
+void push(){
+	if(top==20){
+		printf("overflow");
+		return;
+	} 
+	else{
+		int data;
+		printf("\nEnter data(number) to add in stack: ");
+		scanf("%d",&data);
+		stack[++top]=data;
+	}	
+}
+
+void pop(){
+	if(top==-1) {
+		printf("underflow");
+		return;
+	}else{
+		printf("%d",stack[top--]);
+	}
+}
+
+void peek(){
+	if(top==-1){
+		printf("underflow");
+		return;
+	}else{
+		printf("%d",stack[top]);
+	}
+}
+
+void display(){
+	printf("\n Elements of Stack are: ");
+	for(int i=top ; i>-1 ; i--)
+		printf("%d ",stack[i]);
+	printf("\n\n");
+}
+
+int main(){
+	int choice;
+	while(1){
+		printf("\n\t 01. Enter to create Stack using Array.\n");
+		printf("\t 02. Enter to push element in stack.\n");
+		printf("\t 03. Enter to pop element from stack.\n");
+		printf("\t 04. Enter to peek element from stack.\n");
+		printf("\t 05. Enter to Dispay elements of stack.\n");
+		printf("\t 06. Enter to Exit.\n");
+		printf("\t 07. Invalid Input.\n");
+
+		printf("\n\n Enter your choice: ");
+		scanf("%d",&choice);
+
+		switch(choice){
+		case 1:
+			createStack();
+			break;
+		case 2:
+			push();
+			break;
+		case 3:
+			pop();
+			break;
+		case 4:
+			peek();
+			break;
+		case 5:
+			display();
+			break;
+		case 6:
+			exit(1);
+			break;
+		default:
+			printf("\n Invalid choice.");
+		}
+	}
+	return 0;
+}
+	
