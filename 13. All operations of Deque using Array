@@ -1,0 +1,154 @@
+// Using circular array implementation of Deque in C.
+
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 10
+
+int arr[MAX];
+
+int count(int *arr) {
+    int c = 0, i;
+    for(i = 0; i < MAX; i++){
+        if (arr[i] != 0)
+        c++;
+    }
+    return c;
+}
+
+void addFront(int *arr,int *ptrfront, int *ptrrear) {
+    int i,k,c,item;
+    printf("\nEnter item to add in Front of Deque.");
+    scanf("%d",&item);
+
+    if (*ptrfront == 0 && *ptrrear == MAX - 1) {
+        printf("\nDeque is full.\n");
+        return;
+    }
+    if(*ptrfront == -1) {
+        *ptrfront = *ptrrear = 0; // Increment by one(1).
+        arr[*ptrfront] = item;
+        return;
+    }
+    if (*ptrrear != MAX - 1) {
+        k = *ptrrear + 1;
+        for (i = 1; i<=count(arr); i++) {
+            arr[k] = arr[k - 1];
+            k--;
+        }
+        arr[k] = item;
+        *ptrfront = k;
+        (*ptrrear)++;
+    }else{
+        (*ptrfront)--;
+        arr[*ptrfront] = item;
+    }
+}
+
+
+void addRear(int *arr, int *ptrfront, int *ptrrear) {
+    int i, k,item;
+    printf("\nEnter item to add in Rear of Deque.");
+    scanf("%d",&item);
+    if (*ptrfront == 0 && *ptrrear == MAX - 1) {
+        printf("\nDeque is full.\n");
+        return;
+    }
+    if (*ptrfront == -1) {
+        *ptrrear = *ptrfront = 0;
+        arr[*ptrrear] = item;
+        return;
+    }
+    if (*ptrrear == MAX - 1) {
+        k = *ptrfront - 1;
+        for (i = *ptrfront - 1; i < *ptrrear; i++) {
+            k = i;
+            if (k == MAX - 1)
+                arr[k] = 0;
+            else
+                arr[k] = arr[i + 1];
+        }
+        (*ptrrear)--;
+        (*ptrfront)--;
+    }
+    (*ptrrear)++;
+    arr[*ptrrear] = item;
+}
+
+void delFront(int *arr, int *ptrfront, int *ptrrear) {
+    int item;
+    if (*ptrfront == -1) {
+        printf("\nDeque is empty.\n");
+        return;
+    }
+    item = arr[*ptrfront];
+    arr[*ptrfront] = 0;
+
+    if (*ptrfront == *ptrrear)
+        *ptrfront = *ptrrear = -1;
+    else
+        (*ptrfront)++;
+    printf("Deleted Front item is: %d",item);
+}
+
+void delRear(int *arr, int *ptrfront, int *ptrrear) {
+    int item;
+    if (*ptrfront == -1) {
+        printf("\nDeque is empty.\n");
+        return;
+    }
+    item = arr[*ptrrear];
+    arr[*ptrrear] = 0;
+    (*ptrrear)--;
+    if (*ptrrear == -1)
+        *ptrfront = -1;
+    printf("Deleted Rear item is: %d",item);
+}
+
+void display(int *arr) {
+    int i;
+    printf("\n front:  ");
+    for (i = 0; i < MAX; i++)
+        printf("  %d", arr[i]);
+    printf("  :rear");
+}
+
+
+int main() {  
+    int ptrfront, ptrrear, i, n , choice;
+    ptrfront = ptrrear = -1;
+    for (i = 0; i < MAX; i++)
+        arr[i] = 0;
+
+    while (1){
+        printf("\n\t1. Insert Front element in Deque. \n");
+        printf("\t2. Insert Rear element in Deque. \n");
+        printf("\t3. Delete Front element from Deque. \n");
+        printf("\t4. Delete Front element from Deque. \n");
+        printf("\t5. Display elements of Deque. \n");
+        printf("\t6. Quit. \n");
+        printf("\tEnter your choice : ");
+        scanf("%d", &choice);
+        switch (choice){
+            case 1:
+                addFront(arr,&ptrfront,&ptrrear);
+                break;
+            case 2:
+                addRear(arr,&ptrfront,&ptrrear);
+                break;
+            case 3:
+                delFront(arr,&ptrfront,&ptrrear);
+                break;
+            case 4:
+                delRear(arr,&ptrfront,&ptrrear);
+                break;
+            case 5:
+                display(arr);
+                break;
+            case 6:
+                exit(1);
+                break;
+            default:
+                printf("Wrong choice \n");
+        } 
+    }
+}
